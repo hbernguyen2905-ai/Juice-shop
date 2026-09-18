@@ -194,3 +194,60 @@ info: Server listening on port 3000
 ```
 
 thì Juice Shop đã khởi động thành công.
+
+# Hướng Dẫn Chạy Automation Test (OWASP Juice Shop)
+
+> **Lưu ý:** Các file `TEST_CASES_*.md` đóng vai trò là tài liệu mô tả test case. Để thực thi kiểm thử tự động, bạn cần chạy các câu lệnh script dưới đây qua PowerShell/Terminal tại thư mục gốc của dự án.
+
+## 1. Chuẩn bị môi trường
+
+Mở PowerShell và di chuyển vào thư mục dự án:
+```powershell
+cd D:\juice_shop\juice-shop
+2. Các lệnh chạy kiểm thử Unit & API Test
+🟢 2.1. Server Unit Test
+Kiểm tra các đơn vị mã nguồn xử lý ở phía Server.
+
+PowerShell
+
+
+Lệnh : npm run test:server
+Kết quả đạt được: 419 tests (414 PASS, 0 FAIL, 5 SKIP)
+
+🟢 2.2. API Test
+Kiểm tra các điểm cuối API quan trọng (Register, Login, Search, Product, Basket, Checkout, Profile, Authorization, JWT/2FA...).
+
+PowerShell
+
+
+Lệnh : npm run test:api
+Kết quả đạt được: 537 tests (530 PASS, 0 FAIL, 7 SKIP)
+
+🟢 2.3. Frontend Unit Test
+Kiểm tra các thành phần và logic giao diện ở phía Client.
+
+PowerShell
+
+
+Lệnh : npm run test:frontend
+Kết quả đạt được: 121 test files (1309 PASS, 0 FAIL)
+
+3. Kiểm thử giao diện E2E (Cypress)
+Chạy kiểm thử luồng người dùng thực tế trên trình duyệt đối với các kịch bản trong test/cypress/e2e/ (bao gồm login.spec.ts, basket.spec.ts, checkout.spec.ts, search.spec.ts,...).
+
+Bước 1: Khởi chạy Server (Terminal 1)
+PowerShell
+
+
+cd D:\juice_shop\juice-shop
+npm start
+Giữ nguyên terminal này sau khi ứng dụng chạy tại địa chỉ: http://localhost:3000
+
+Bước 2: Thực thi Cypress Test (Terminal 2)
+Mở một cửa sổ PowerShell thứ hai và chạy lệnh:
+
+PowerShell
+
+
+cd D:\juice_shop\juice-shop
+npm run cypress:run
