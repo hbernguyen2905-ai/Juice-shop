@@ -246,6 +246,10 @@ void describe('insecurity', () => {
       const token = security.authorize(user)
       assert.equal(security.isDeluxe({ headers: { authorization: `Bearer ${token}` } } as unknown as Request), false)
     })
+
+    void it('returns false if no token is present', () => {
+      assert.equal(security.isDeluxe({ headers: {} } as unknown as Request), false)
+    })
   })
 
   void describe('isRedirectAllowed', () => {
@@ -334,6 +338,31 @@ void describe('insecurity', () => {
       const next = () => { nextCalled = true }
       security.updateAuthenticatedUsers()(req, {} as any, next)
       assert.ok(nextCalled)
+    })
+
+    void it('updateAuthenticatedUsers should restore a valid user from an unknown cookie token', async () => {
+      const token = security.authorize({ data: { id: 4, role: 'customer' } })
+      let cookieSet = false
+      const req = { cookies: { token }, headers: {} } as any
+      const res = { cookie: () => { cookieSet = true } } as any
+
+      security.updateAuthenticatedUsers()(req, res, () => {})
+      await new Promise(resolve => setImmediate(resolve))
+
+      assert.equal(security.authenticatedUsers.get(token)?.data.id, 4)
+      assert.equal(cookieSet, true)
+    })
+
+    void it('updateAuthenticatedUsers should ignore an invalid cookie token', async () => {
+      let cookieSet = false
+      const req = { cookies: { token: 'invalid-token' }, headers: {} } as any
+      const res = { cookie: () => { cookieSet = true } } as any
+
+      security.updateAuthenticatedUsers()(req, res, () => {})
+      await new Promise(resolve => setImmediate(resolve))
+
+      assert.equal(cookieSet, false)
+      assert.equal(security.authenticatedUsers.get('invalid-token'), undefined)
     })
 
     void it('isAuthorized returns a middleware', () => {

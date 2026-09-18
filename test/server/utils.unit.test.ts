@@ -165,6 +165,12 @@ void describe('utils', () => {
         assert.deepEqual(utils.getChallengeEnablementStatus(challenge, 'disabled', isEnvironmentFunctions), { enabled: true, disabledBecause: null })
       })
     }
+
+    void it('safetyMode: auto keeps an environment-mismatched challenge enabled', () => {
+      const challenge: ChallengeModel = { disabledEnv: 'Docker' } as unknown as ChallengeModel
+
+      assert.deepEqual(utils.getChallengeEnablementStatus(challenge, 'auto', defaultIsEnvironmentFunctions), { enabled: true, disabledBecause: null })
+    })
   })
 
   void describe('toISO8601', () => {
