@@ -1,4 +1,7 @@
 # Juice-shop
+# LINK VIDEO THUYẾT TRÌNH VÀ DEMO DỰ ÁN CỦA NHÓM 
+- (https://drive.google.com/drive/folders/1T26mWkRpSiALzZ7ZwamIgfL0nqku4y1z?usp=sharing)
+
 # README — Cài đặt Node.js và Dependency cho OWASP Juice Shop
 
 ## 1. Kiểm tra phiên bản Node.js
